@@ -1,0 +1,446 @@
+/* ============================================================
+   视频扇形交互（校园官方宣传片展示区）
+   ============================================================ */
+
+.project-visual-video,
+.project-visual-video:hover {
+  overflow: visible;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.project-visual-video::after {
+  display: none;
+}
+
+.videofan {
+  position: absolute;
+  inset: 0;
+}
+
+.videofan-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+}
+
+/* 卡片基础 */
+.vf-card {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 60%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 14px;
+  transform-origin: 50% 100%;
+  overflow: hidden;
+  z-index: 2;
+  --tx: 0px;
+  --rot: 0deg;
+  --ty: 0px;
+  --sc: 1;
+  transform: translateX(calc(-50% + var(--tx))) translateY(var(--ty)) rotate(var(--rot)) scale(var(--sc));
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s, border-color 0.4s;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* 默认：三张卡片同尺寸、不旋转，水平错位叠放（等大） */
+.vf-card:nth-child(1) {
+  --tx: -64px;
+  --rot: 0deg;
+  z-index: 2;
+}
+.vf-card:nth-child(2) {
+  --tx: 0px;
+  --rot: 0deg;
+  z-index: 3;
+}
+.vf-card:nth-child(3) {
+  --tx: 64px;
+  --rot: 0deg;
+  z-index: 2;
+}
+
+/* 悬停区域：扇形完全展开 */
+.videofan:hover .vf-card:nth-child(1) {
+  --tx: -136px;
+  --rot: -18deg;
+}
+.videofan:hover .vf-card:nth-child(2) {
+  --tx: 0px;
+  --rot: 0deg;
+}
+.videofan:hover .vf-card:nth-child(3) {
+  --tx: 136px;
+  --rot: 18deg;
+}
+
+/* 悬停某张卡片：微微向外弹出并置顶 */
+.vf-card:hover {
+  --ty: -20px;
+  --sc: 1.06;
+  z-index: 8;
+  border-color: rgba(94, 234, 212, 0.5);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6), 0 0 40px rgba(94, 234, 212, 0.18);
+}
+
+.vf-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  background: #0d0d10;
+}
+
+.vf-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 7, 8, 0.78) 0%, transparent 42%);
+  pointer-events: none;
+}
+
+.vf-play {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(7, 7, 8, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  transition: background 0.35s, border-color 0.35s, transform 0.35s;
+}
+
+.vf-card:hover .vf-play {
+  background: rgba(94, 234, 212, 0.9);
+  border-color: rgba(94, 234, 212, 0.9);
+  color: #07100e;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.vf-title {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #f2f2f5;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.vf-index {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(7, 7, 8, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+/* ---------- 播放弹窗 ---------- */
+.vf-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 6, 0.88);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  animation: vfFade 0.3s ease;
+  padding: 24px;
+}
+
+@keyframes vfFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.vf-modal-box {
+  width: min(1180px, 94vw);
+  animation: vfRise 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes vfRise {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.vf-modal-box video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 50px 140px rgba(0, 0, 0, 0.7);
+}
+
+.vf-modal-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.vf-modal-title span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.vf-modal-close {
+  position: absolute;
+  right: 26px;
+  top: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.vf-modal-close:hover {
+  background: rgba(94, 234, 212, 0.16);
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+/* 小屏：扇形收窄 */
+@media (max-width: 900px) {
+  .vf-card {
+    width: 54%;
+  }
+  .videofan:hover .vf-card:nth-child(1) { --tx: -78px; --rot: -15deg; }
+  .videofan:hover .vf-card:nth-child(3) { --tx: 78px; --rot: 15deg; }
+}
+
+
+/* ---------- IP 图片分组图集 ---------- */
+.vf-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  background: #0d0d10;
+}
+
+.ipg-box {
+  width: min(1180px, 94vw);
+  animation: vfRise 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ipg-stage {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #000;
+  box-shadow: 0 50px 140px rgba(0, 0, 0, 0.7);
+}
+
+.ipg-img {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  background: #000;
+  transition: filter 0.45s ease, transform 0.45s ease;
+}
+
+.ipg-stage.show-prompt .ipg-img {
+  filter: blur(14px) brightness(0.6);
+  transform: scale(1.05);
+}
+
+.ipg-prompt {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 64px 46px 40px;
+  background: rgba(7, 7, 8, 0.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.ipg-prompt-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.ipg-prompt p {
+  color: var(--text);
+  font-size: 15px;
+  line-height: 2;
+  max-width: 900px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+}
+
+.ipg-prompt-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(7, 7, 8, 0.6);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.ipg-prompt-btn:hover,
+.ipg-prompt-btn.on {
+  background: rgba(94, 234, 212, 0.9);
+  border-color: rgba(94, 234, 212, 0.9);
+  color: #07100e;
+}
+
+.ipg-counter {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 4;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(7, 7, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.ipg-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.ipg-arrow {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 26px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.ipg-arrow:hover {
+  background: rgba(94, 234, 212, 0.16);
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.ipg-thumbs {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ipg-thumb {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #0d0d10;
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.ipg-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.ipg-thumb:hover {
+  opacity: 0.85;
+}
+
+.ipg-thumb.on {
+  opacity: 1;
+  border-color: var(--accent-line);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 700px) {
+  .ipg-thumb {
+    width: 52px;
+    height: 52px;
+  }
+  .ipg-nav {
+    gap: 10px;
+  }
+  .ipg-prompt {
+    padding: 60px 22px 24px;
+  }
+}
+
+
+/* ---------- 移除视频卡片上的播放按钮（用户要求） ---------- */
+.vf-play {
+  display: none;
+}

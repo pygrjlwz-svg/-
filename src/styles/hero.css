@@ -1,0 +1,163 @@
+/* ============================================================
+   Hero 首页新版排版：仅保留左侧文字，全屏视频/Canvas 背景
+   （在 app.css 之后引入，覆盖旧版 Hero 样式）
+   ============================================================ */
+
+.hero-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding-top: calc(var(--nav-h) + 16px);
+  padding-bottom: clamp(36px, 6vh, 72px);
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 3vh, 38px);
+  max-width: 880px;
+}
+
+.hero-top {
+  gap: 20px;
+}
+
+.hero-coords {
+  white-space: nowrap;
+}
+
+.hero-title {
+  font-size: clamp(56px, 9vw, 158px);
+  line-height: 1.04;
+}
+
+.hero-roles {
+  gap: 10px 16px;
+}
+
+.hero-tagline {
+  font-size: clamp(15px, 1.3vw, 18px);
+  max-width: 640px;
+}
+
+.hero-actions {
+  margin-top: 2px;
+}
+
+.hero-meta {
+  max-width: 640px;
+}
+
+/* ---------- 矮视口：压缩间距保证内容完整落在首屏 ---------- */
+@media (max-height: 820px) {
+  .hero-inner {
+    padding-top: calc(var(--nav-h) + 10px);
+    padding-bottom: 32px;
+  }
+  .hero-copy {
+    gap: 16px;
+  }
+  .hero-title {
+    font-size: clamp(48px, 8vw, 128px);
+  }
+  .hero-tagline {
+    font-size: 15px;
+  }
+  .hero-actions .btn {
+    padding: 13px 24px;
+  }
+}
+
+@media (max-height: 700px) {
+  .hero-copy {
+    gap: 12px;
+  }
+  .hero-title {
+    font-size: clamp(44px, 7vw, 104px);
+  }
+  .hero-roles {
+    font-size: 11px;
+  }
+  .hero-meta {
+    padding-top: 16px;
+  }
+}
+
+/* ---------- 磨砂质感层 ---------- */
+.hero-frost {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-frost {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+
+/* ---------- 开场幕布 ---------- */
+.intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(80% 60% at 50% 45%, rgba(94, 234, 212, 0.06), transparent 70%),
+    #070708;
+}
+
+.intro-curtain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.curtain-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.curtain-tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.curtain-line {
+  width: 240px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  transform-origin: left center;
+  box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.5);
+}
+
+/* 磨砂：模糊直接作用于视频元素（比 backdrop-filter 逐帧采样更省性能） */
+.hero-backdrop video {
+  filter: blur(4px) saturate(0.85) brightness(0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-frost {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

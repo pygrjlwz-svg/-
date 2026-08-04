@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="940" viewBox="0 0 800 940">
+<defs>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#101114"/>
+<stop offset="100%" stop-color="#08090a"/>
+</linearGradient>
+<radialGradient id="halo" cx="50%" cy="42%" r="55%">
+<stop offset="0%" stop-color="#5eead4" stop-opacity="0.16"/>
+<stop offset="100%" stop-color="#5eead4" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<rect width="800" height="940" fill="url(#bg)"/>
+<rect width="800" height="940" fill="url(#halo)"/>
+<rect x="60" y="60" width="680" height="820" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+<rect x="76" y="76" width="648" height="788" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+<circle cx="400.0" cy="430" r="250" fill="none" stroke="#5eead4" stroke-opacity="0.16" stroke-width="1.5"/>
+<circle cx="400.0" cy="430" r="196" fill="none" stroke="#5eead4" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="400.0" cy="430" r="168" fill="rgba(94,234,212,0.05)" stroke="#5eead4" stroke-opacity="0.5" stroke-width="1.5"/>
+<text x="400.0" y="492" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif" font-size="208" font-weight="900" fill="#ececf0" text-anchor="middle">彭</text>
+<text x="400.0" y="560" font-family="JetBrains Mono, Consolas, monospace" font-size="20" letter-spacing="10" fill="#5eead4" text-anchor="middle">PENG YU — AIGC CREATOR</text>
+<text x="84" y="92" font-family="JetBrains Mono, Consolas, monospace" font-size="15" letter-spacing="6" fill="rgba(255,255,255,0.4)">PORTRAIT / 2026</text>
+<rect x="84" y="820" width="120" height="3" fill="#5eead4" fill-opacity="0.8"/>
+<text x="84" y="852" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="rgba(255,255,255,0.85)">头像占位</text>
+<text x="84" y="884" font-family="JetBrains Mono, Consolas, monospace" font-size="13" letter-spacing="3" fill="rgba(255,255,255,0.35)">REPLACE WITH REAL PHOTO</text>
+<rect width="800" height="940" filter="url(#n)" opacity="0.06"/>
+</svg>
