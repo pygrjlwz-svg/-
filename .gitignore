@@ -2,6 +2,7 @@ node_modules
 dist
 .DS_Store
 *.local
-# 视频已压缩至 GitHub 单文件限制内，需随仓库部署，不再忽略
+# 瑙嗛宸插帇缂╄嚦 GitHub 鍗曟枃浠堕檺鍒跺唴锛岄渶闅忎粨搴撻儴缃诧紝涓嶅啀蹇界暐
 .pnpm-store
 vite-dev*.log
+wrangler*.log
