@@ -18,10 +18,11 @@ export default function HeroBackdrop() {
     let alive = true
     // Vite 对缺失的静态资源会回退返回 index.html（text/html），
     // 因此需要校验响应类型确实是视频，再启用视频背景。
+    // 线上静态托管对 HEAD 的 content-type 可能不是 video/*，
+    // 因此只要资源存在（2xx）就启用视频，播放失败由 <video onError> 自动回退 Canvas。
     fetch('/media/hero.mp4', { method: 'HEAD' })
       .then((r) => {
-        const type = (r.headers.get('content-type') || '').toLowerCase()
-        if (alive && r.ok && type.startsWith('video/')) setUseVideo(true)
+        if (alive && r.ok) setUseVideo(true)
       })
       .catch(() => {})
     return () => {

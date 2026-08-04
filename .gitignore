@@ -2,8 +2,6 @@ node_modules
 dist
 .DS_Store
 *.local
-public/media/*.mp4
-!public/media/.gitkeep
-public/videos/*.mp4
-!public/videos/.gitkeep
+# 视频已压缩至 GitHub 单文件限制内，需随仓库部署，不再忽略
 .pnpm-store
+vite-dev*.log
