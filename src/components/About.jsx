@@ -37,7 +37,7 @@ export default function About() {
         <div className="about-grid">
           <div className="about-left">
             <Reveal className="avatar-card" delay={80}>
-              <img src="/avatar.jpg" alt={`${profile.name} 头像`} loading="lazy" />
+              <img src="/avatar.webp" alt={`${profile.name} 头像`} loading="lazy" />
               <span className="avatar-status">
                 <span className="dot" />
                 {profile.available}
