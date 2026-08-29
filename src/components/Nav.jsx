@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { profile, navLinks } from '../data/profile.js'
 import { ArrowUpRight } from './icons.jsx'
+import { mediaUrl } from '../data/media.js'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -35,7 +36,7 @@ export default function Nav() {
       <div className="nav-inner">
         <a className="brand" href="#hero" aria-label="回到首页">
           <span className="brand-mark">
-            <img src="/logo.png" alt={`${profile.name} 标识`} />
+            <img src={mediaUrl('/logo.png')} alt={`${profile.name} 标识`} />
           </span>
           <span className="brand-name">
             {profile.name}

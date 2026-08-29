@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { mediaUrl } from '../data/media.js'
 
 /**
  * Hero 背景：
@@ -20,7 +21,7 @@ export default function HeroBackdrop() {
     // 因此需要校验响应类型确实是视频，再启用视频背景。
     // 线上静态托管对 HEAD 的 content-type 可能不是 video/*，
     // 因此只要资源存在（2xx）就启用视频，播放失败由 <video onError> 自动回退 Canvas。
-    fetch('/media/hero.mp4', { method: 'HEAD' })
+    fetch(mediaUrl('/media/hero.mp4'), { method: 'HEAD' })
       .then((r) => {
         if (alive && r.ok) setUseVideo(true)
       })
@@ -199,7 +200,7 @@ export default function HeroBackdrop() {
           poster="/covers/cover-01.svg"
           onError={() => setUseVideo(false)}
         >
-          <source src="/media/hero.mp4" type="video/mp4" />
+          <source src={mediaUrl('/media/hero.mp4')} type="video/mp4" />
         </video>
       </div>
     )

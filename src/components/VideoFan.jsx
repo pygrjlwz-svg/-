@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Play } from './icons.jsx'
+import { mediaUrl } from '../data/media.js'
 
 /**
  * 视频扇形组件（性能优化版）：
@@ -82,7 +83,7 @@ export default function VideoFan({ videos }) {
           >
             <video
               ref={(el) => (videoRefs.current[i] = el)}
-              src={v.file}
+              src={mediaUrl(v.file)}
               muted
               loop
               playsInline
@@ -111,7 +112,7 @@ export default function VideoFan({ videos }) {
               ×
             </button>
             <div className="vf-modal-box">
-              <video ref={modalVideoRef} src={active.file} controls autoPlay playsInline />
+              <video ref={modalVideoRef} src={mediaUrl(active.file)} controls autoPlay playsInline />
               <div className="vf-modal-title">
                 {active.title}
                 <span>{active.en}</span>

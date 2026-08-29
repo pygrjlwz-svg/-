@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ipPrompts } from '../data/ipPrompts.js'
 import { Play } from './icons.jsx'
+import { mediaUrl } from '../data/media.js'
 
 /**
  * IP 图片分组组件：
@@ -69,7 +70,7 @@ export default function IpFan({ groups }) {
             }}
             aria-label={`查看 ${g.name}`}
           >
-            <img src={`/ip/${g.images[0]}.webp`} loading="lazy" alt={`${g.name} 首图`} />
+            <img src={mediaUrl(`/ip/${g.images[0]}.webp`)} loading="lazy" alt={`${g.name} 首图`} />
             <span className="vf-shade" aria-hidden="true" />
             <span className="vf-play" aria-hidden="true">
               <Play width={18} height={18} />
@@ -97,7 +98,7 @@ export default function IpFan({ groups }) {
             </button>
             <div className="ipg-box">
               <div className={`ipg-stage ${showPrompt ? 'show-prompt' : ''}`}>
-                <img className="ipg-img" src={`/ip/${current}.webp`} alt={`${active.group.name} ${current}`} />
+                <img className="ipg-img" src={mediaUrl(`/ip/${current}.webp`)} alt={`${active.group.name} ${current}`} />
                 {showPrompt && (
                   <div className="ipg-prompt">
                     <div className="ipg-prompt-title">提示词 · {current}</div>
@@ -132,7 +133,7 @@ export default function IpFan({ groups }) {
                       }}
                       aria-label={`第 ${i + 1} 张`}
                     >
-                      <img src={`/ip/${key}.webp`} alt="" />
+                      <img src={mediaUrl(`/ip/${key}.webp`)} alt="" />
                     </button>
                   ))}
                 </div>

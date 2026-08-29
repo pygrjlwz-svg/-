@@ -1,6 +1,7 @@
 import { profile } from '../data/profile.js'
 import Reveal from './Reveal.jsx'
 import { Mail, Phone, WeChat, Pin } from './icons.jsx'
+import { mediaUrl } from '../data/media.js'
 
 const contactIcons = {
   email: Mail,
@@ -37,7 +38,7 @@ export default function About() {
         <div className="about-grid">
           <div className="about-left">
             <Reveal className="avatar-card" delay={80}>
-              <img src="/avatar.webp" alt={`${profile.name} 头像`} loading="lazy" />
+              <img src={mediaUrl('/avatar.webp')} alt={`${profile.name} 头像`} loading="lazy" />
               <span className="avatar-status">
                 <span className="dot" />
                 {profile.available}
